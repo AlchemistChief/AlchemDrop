@@ -1,0 +1,19 @@
+.controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.controls button {
+    padding: 0.4rem 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    height: auto;
+    width: auto;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#upload-btn {
+    display: none;
+}

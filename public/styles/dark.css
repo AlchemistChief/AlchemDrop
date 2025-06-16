@@ -1,0 +1,28 @@
+/*light.css*/
+
+body {
+    background-color: #07000a;
+    color: #f0d6e8;
+}
+
+header {
+    background-color: #ff0062;
+    color: #1b1b2f;
+}
+
+#files-table {
+    background-color: #3a1e35;
+}
+
+button {
+    background-color: #7c0030;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #d63773;
+}

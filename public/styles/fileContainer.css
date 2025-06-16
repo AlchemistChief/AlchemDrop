@@ -1,0 +1,86 @@
+/* fileContainer.css */
+#files-container {
+    width: 100%;
+    height: 100%;
+    display: none;
+    overflow-y: auto;
+    overflow-x: auto;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 1rem;
+}
+
+#files-table {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+#files-table th,
+#files-table td {
+    white-space: nowrap;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: left;
+    word-break: break-word;
+}
+
+#files-table td:last-child {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ────────── Table Action Buttons ────────── */
+#files-table button {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+#files-table button img {
+    width: 80%;
+    height: 80%;
+    display: block;
+    pointer-events: none;
+}
+
+/* Download (green) */
+.btn-download {
+    background-color: #2ecc71;
+}
+
+.btn-download:hover {
+    background-color: #27ae60;
+}
+
+/* Delete (red) */
+.btn-delete {
+    background-color: #e74c3c;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+/* Rename (yellow) */
+.btn-rename {
+    background-color: #f1c40f;
+}
+
+.btn-rename:hover {
+    background-color: #d4ac0d;
+}
+
+.btn-download,
+.btn-delete,
+.btn-rename {
+    color: white;
+}

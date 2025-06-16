@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AlchemDrop</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/loginContainer.css" />
+  <link rel="stylesheet" href="styles/fileContainer.css" />
+  <link rel="stylesheet" id="theme-style" href="styles/dark.css" />
+</head>
+
+<body>
+  <header>
+    <h1>AlchemDrop</h1>
+    <div class="controls">
+      <button id="theme-toggle">🌗 Theme</button>
+      <button id="upload-btn">Upload</button>
+    </div>
+  </header>
+
+  <div id="content-container">
+    <div id="login-container">
+      <form id="login-form">
+        <input type="text" id="username" placeholder="Username" required autocomplete="username" />
+        <input type="password" id="password" placeholder="Password" required autocomplete="current-password" />
+      </form>
+      <button type="submit" id="login-btn">Login</button>
+    </div>
+
+    <div id="files-container">
+      <table id="files-table">
+        <thead>
+          <tr>
+            <th>Filename</th>
+            <th>Size</th>
+            <th>Modified</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+
+</html>
