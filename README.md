@@ -80,13 +80,13 @@ All of these can be copied directly into your terminal:
 > Move to `Emulated/Storage`. Required to work in Termux
 
 ```bash
-mv /storage/emulated/0/Download/AlchemYT ~
+mv /storage/emulated/0/Download/AlchemDrop ~
 ```
 
 > Move back to `Internal/Storage`. Required if you want to edit files.
 
 ```bash
-mv ~/AlchemYT /storage/emulated/0/Download
+mv ~/AlchemDrop /storage/emulated/0/Download
 ```
 
 ---
