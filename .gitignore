@@ -3,6 +3,7 @@
 *.zip
 temp/
 cookies.txt
+files/
 
 # VSCode
 .vscode/
