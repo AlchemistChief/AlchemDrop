@@ -1,6 +1,6 @@
 // ────────── Custom Modules ──────────
 import { getLogin } from "./utils.js";
-import { sendClientLog, notifyFileUpload } from "./websocketHandler.js";
+import { sendClientLog, notifyFileAction } from "./websocketHandler.js";
 
 // ────────── Rename File Frontend ──────────
 export async function fileRename(oldName) {
@@ -11,8 +11,7 @@ export async function fileRename(oldName) {
             alert("Rename cancelled or invalid new name.");
             return;
         }
-
-        // Send POST request to rename API
+        
         const res = await fetch('/fileRename', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -30,7 +29,7 @@ export async function fileRename(oldName) {
         }
 
         // ─── WebSocket Trigger to Update All Clients ───
-        notifyFileUpload();
+        notifyFileAction('fileRenamed');
         sendClientLog(`Renamed "${oldName}" to "${newName}"`);
 
         console.log(`Renamed "${oldName}" to "${newName}" successfully.`);

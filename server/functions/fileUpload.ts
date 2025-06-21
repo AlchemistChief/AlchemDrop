@@ -7,7 +7,7 @@ import type { Request, Response } from 'express';
 import { FILE_DIR } from '../assets/globals.ts';
 import { loginCheck } from './loginCheck.ts';
 
-// ────────── Upload File Logic ──────────
+// ────────── Upload Files Logic ──────────
 export async function fileUpload(req: Request, res: Response) {
     const contentType = req.headers['content-type'] || '';
     const boundaryMatch = contentType.match(/boundary=(.+)$/);
@@ -27,7 +27,8 @@ export async function fileUpload(req: Request, res: Response) {
         try {
             const parts = buffer.toString().split(boundary).filter(Boolean).slice(0, -1);
 
-            let username = '', password = '', fileName = '', fileContent: Buffer | null = null;
+            let username = '', password = '';
+            const files: { name: string; content: Buffer }[] = [];
 
             for (const part of parts) {
                 const [headerSection, ...rest] = part.split('\r\n\r\n');
@@ -47,8 +48,9 @@ export async function fileUpload(req: Request, res: Response) {
                 const fieldName = nameMatch[1];
 
                 if (fileNameMatch) {
-                    fileName = fileNameMatch[1];
-                    fileContent = Buffer.from(trimmedBody, 'binary');
+                    const fileName = fileNameMatch[1];
+                    const fileBuffer = Buffer.from(trimmedBody, 'binary');
+                    files.push({ name: fileName, content: fileBuffer });
                 } else {
                     const value = trimmedBody.trim();
                     if (fieldName === 'username') username = value;
@@ -61,18 +63,25 @@ export async function fileUpload(req: Request, res: Response) {
                 return;
             }
 
-            if (!fileName || !fileContent) {
-                res.status(400).json({ error: 'Missing file or filename' });
+            if (files.length === 0) {
+                res.status(400).json({ error: 'No files uploaded' });
                 return;
             }
 
-            const filePath = path.join(FILE_DIR, fileName);
-            await fs.promises.writeFile(filePath, fileContent);
-            res.status(200).json({ success: true, message: `Uploaded '${fileName}' successfully.` });
+            for (const file of files) {
+                const filePath = path.join(FILE_DIR, file.name);
+                await fs.promises.writeFile(filePath, file.content);
+            }
+
+            res.status(200).json({
+                success: true,
+                message: `Uploaded ${files.length} file(s) successfully.`,
+                files: files.map(f => f.name),
+            });
 
         } catch (err) {
             console.error('Manual Upload Error:', err);
-            res.status(500).json({ error: 'Failed to upload file' });
+            res.status(500).json({ error: 'Failed to upload files' });
         }
     });
 }

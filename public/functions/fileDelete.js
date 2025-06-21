@@ -1,15 +1,13 @@
 // ────────── Custom Modules ──────────
 import { getLogin } from "./utils.js";
-import { sendClientLog, notifyFileUpload } from "./websocketHandler.js";
+import { sendClientLog, notifyFileAction } from "./websocketHandler.js";
 
 // ────────── Delete File Frontend ──────────
 export async function fileDelete(fileName) {
     try {
-        // Confirm before deleting
         const confirmed = confirm(`Are you sure you want to delete "${fileName}"?`);
         if (!confirmed) return;
 
-        // Send POST request to delete API
         const res = await fetch('/fileDelete', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -25,7 +23,7 @@ export async function fileDelete(fileName) {
             return;
         }
         // ─── WebSocket Trigger to Update All Clients ───
-        notifyFileUpload();
+        notifyFileAction('fileDeleted');
         sendClientLog(`Deleted "${fileName}"`);
 
         console.log(`Deleted "${fileName}" successfully.`);

@@ -1,5 +1,6 @@
 // ────────── Custom Modules ──────────
 import { getLogin } from "./utils.js";
+import { sendClientLog } from "./websocketHandler.js";
 
 // ────────── Download and Cache File ──────────
 const fileCache = new Map();

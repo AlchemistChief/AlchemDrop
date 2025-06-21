@@ -1,6 +1,6 @@
 // ────────── Custom Modules ──────────
 import { getLogin } from "./utils.js";
-import { sendClientLog, notifyFileUpload } from "./websocketHandler.js";
+import { sendClientLog, notifyFileAction } from "./websocketHandler.js";
 
 // ────────── Prompt user to select files ──────────
 async function promptFileSelection() {
@@ -58,7 +58,7 @@ export async function fileUpload() {
         }
 
         // ─── WebSocket Trigger to Update All Clients ───
-        notifyFileUpload();
+        notifyFileAction('fileUploaded');
         sendClientLog(`Uploaded ${files.length} file(s)`);
 
         console.log(`Uploaded ${files.length} file(s) successfully.`);

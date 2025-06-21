@@ -114,7 +114,7 @@ export async function loadFiles() {
         files.sort((a, b) => b.modified - a.modified);
 
         const tbody = document.querySelector("#files-table tbody");
-        tbody.innerHTML = ""; // 🧹 clear old rows (ensures correct order)
+        tbody.innerHTML = "";
 
         // Add sorted rows
         files.forEach(file => {
