@@ -15,3 +15,8 @@ export function getMimeType(fileName:string) {
         default: return 'application/octet-stream';
     }
 }
+
+// ────────── Generate Session ID (Native) ──────────
+export function generateSessionId(): string {
+    return `${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+}
