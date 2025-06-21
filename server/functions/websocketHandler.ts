@@ -62,14 +62,16 @@ export function initializeWebSocketServer(server: Server) {
                     case 'fileAction': {
                         const user = sessions.get(data.id)?.username ?? 'unknown';
                         const msg = data.message ?? 'did something unknown';
+                        const action = data.action ?? 'unknown';
+
                         console.log(`[WS] ${user} ${msg} [SessionID: ${data.id}]`);
 
-                        // Optionally still broadcast reload trigger
-                        if (['fileUploaded', 'fileRenamed', 'fileDeleted'].some(t => msg.includes(t.split('file')[1]))) {
+                        if (['fileUploaded', 'fileRenamed', 'fileDeleted'].includes(action)) {
                             broadcast({ type: 'reloadFiles' });
                         }
+
                         break;
-                        }
+                    }
 
                     default:
                         console.warn('[WS] Unknown message type:', data.type);

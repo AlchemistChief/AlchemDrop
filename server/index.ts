@@ -7,8 +7,8 @@ import path from 'path';
 import fs from 'fs';
 
 // ────────── Custom Modules ──────────
-import { initializeWebSocketServer } from './functions/websocketHandler.ts';
-import { loginCheck } from './functions/loginCheck.ts';
+import {initializeWebSocketServer} from './functions/websocketHandler.ts';
+import {loginCheck} from './functions/loginCheck.ts';
 import {fileLoad} from './functions/fileLoad.ts';
 import {fileRename} from './functions/fileRename.ts';
 import {fileDelete} from './functions/fileDelete.ts';

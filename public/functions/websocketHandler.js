@@ -76,6 +76,7 @@ export function notifyFileAction(type) {
     socket.send(JSON.stringify({
         type: 'fileAction',
         id: sessionId,
+        action: type,   // <— NEW
         message,
     }));
 }
