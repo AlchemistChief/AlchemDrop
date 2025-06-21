@@ -45,7 +45,9 @@ echo %BLUECOLOR%[INFO]%RESET% Installing ts-node-dev globally...
 "%INSTALL_DIR%\node.exe" "%INSTALL_DIR%\node_modules\npm\bin\npm-cli.js" install -g ts-node-dev
 
 echo %BLUECOLOR%[INFO]%RESET% Installing all npm dependencies from package.json (skip Python check)...
+set "YOUTUBE_DL_SKIP_PYTHON_CHECK=1"
 "%INSTALL_DIR%\node.exe" "%INSTALL_DIR%\node_modules\npm\bin\npm-cli.js" install
+set "YOUTUBE_DL_SKIP_PYTHON_CHECK="
 
 echo %GREENCOLOR%[SUCCESS]%RESET% Installation complete.
 
@@ -55,4 +57,4 @@ if /i "%START_SERVER%"=="Y" (
 	call "%~dp0START.bat"
 )
 
-pause
+exit
