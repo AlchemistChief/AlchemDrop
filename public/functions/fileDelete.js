@@ -24,7 +24,7 @@ export async function fileDelete(fileName) {
         }
         // ─── WebSocket Trigger to Update All Clients ───
         notifyFileAction('fileDeleted');
-        sendClientLog(`Deleted "${fileName}"`);
+        //sendClientLog(`Deleted "${fileName}"`);
 
         console.log(`Deleted "${fileName}" successfully.`);
     } catch (err) {

@@ -59,7 +59,7 @@ export async function fileUpload() {
 
         // ─── WebSocket Trigger to Update All Clients ───
         notifyFileAction('fileUploaded');
-        sendClientLog(`Uploaded ${files.length} file(s)`);
+        //sendClientLog(`Uploaded ${files.length} file(s)`);
 
         console.log(`Uploaded ${files.length} file(s) successfully.`);
     } catch (err) {

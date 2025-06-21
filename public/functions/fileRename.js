@@ -11,7 +11,7 @@ export async function fileRename(oldName) {
             alert("Rename cancelled or invalid new name.");
             return;
         }
-        
+
         const res = await fetch('/fileRename', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -30,7 +30,7 @@ export async function fileRename(oldName) {
 
         // ─── WebSocket Trigger to Update All Clients ───
         notifyFileAction('fileRenamed');
-        sendClientLog(`Renamed "${oldName}" to "${newName}"`);
+        //sendClientLog(`Renamed "${oldName}" to "${newName}"`);
 
         console.log(`Renamed "${oldName}" to "${newName}" successfully.`);
     } catch (err) {
