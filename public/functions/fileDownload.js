@@ -11,13 +11,14 @@ export async function fileDownload(fileName) {
             return;
         }
 
+        sendClientLog(`Attempting to download "${fileName}"`);
         const res = await fetch('/fileDownload', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                ...getLogin(),
+                ...getLogin(), // { username, password }
                 name: fileName
             }),
         });

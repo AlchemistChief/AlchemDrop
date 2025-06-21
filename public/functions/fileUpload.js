@@ -1,22 +1,25 @@
 // ────────── Custom Modules ──────────
 import { getLogin } from "./utils.js";
-import { loadFiles } from "./fileLoad.js";
+import { sendClientLog, notifyFileUpload } from "./websocketHandler.js";
 
-// ────────── Prompt user to select a file ──────────
+// ────────── Prompt user to select files ──────────
 async function promptFileSelection() {
     return new Promise((resolve, reject) => {
         const input = document.createElement('input');
         input.type = 'file';
-        input.accept = '*/*'; // optional: filter by file types
+        input.accept = '*/*';
+        input.multiple = true;
         input.style.display = 'none';
 
         document.body.appendChild(input);
 
         input.onchange = () => {
             if (input.files.length > 0) {
-                resolve(input.files[0]);
+                // Ensure always array (handle mobile fallback)
+                const files = input.multiple ? [...input.files] : [input.files[0]];
+                resolve(files);
             } else {
-                reject(new Error("No file selected"));
+                reject(new Error("No files selected"));
             }
             document.body.removeChild(input);
         };
@@ -25,22 +28,24 @@ async function promptFileSelection() {
     });
 }
 
-// ────────── Upload File Frontend ──────────
+// ────────── Upload Files Frontend ──────────
 export async function fileUpload() {
     try {
-        // Prompt user to select a file first
-        const file = await promptFileSelection();
+        // Prompt user to select multiple files
+        const files = await promptFileSelection();
 
-        // Prepare login credentials
         const loginData = getLogin();
-
-        // Construct a FormData object with login + file
         const formData = new FormData();
+
         formData.append('username', loginData.username);
         formData.append('password', loginData.password);
-        formData.append('file', file);
 
-        // Send POST request to upload API
+        // Append all files under the same key (e.g. "files[]")
+        for (const file of files) {
+            console.log(`Preparing to upload: ${file.name} (${file.size} bytes)`);
+            formData.append('files[]', file);
+        }
+
         const res = await fetch('/fileUpload', {
             method: 'POST',
             body: formData,
@@ -52,13 +57,13 @@ export async function fileUpload() {
             return;
         }
 
-        // Update the file list after successful upload
-        await loadFiles();
+        // ─── WebSocket Trigger to Update All Clients ───
+        notifyFileUpload();
+        sendClientLog(`Uploaded ${files.length} file(s)`);
 
-        // Log success
-        console.log(`Uploaded "${file.name}" successfully and file list updated.`);
+        console.log(`Uploaded ${files.length} file(s) successfully.`);
     } catch (err) {
         console.error("Upload error:", err);
-        alert("An error occurred while uploading the file.");
+        alert("An error occurred while uploading the files.");
     }
 }

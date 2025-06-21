@@ -2,6 +2,7 @@
 // ────────── Custom Modules ──────────
 import { getLogin } from "./utils.js";
 import { loadFiles } from "./fileLoad.js";
+import { initializeWebsocket } from "./websocketHandler.js";
 
 // This function sends login request with hashed password
 async function login(username, password) {
@@ -27,6 +28,7 @@ export async function loginCheck() {
         document.getElementById("upload-btn").style.display = "flex"; // show upload button
         document.querySelector("header").style.display = "flex"; // show header
 
+        initializeWebsocket()
         loadFiles()
     } else {
         alert("Login failed");

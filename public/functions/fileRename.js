@@ -1,6 +1,6 @@
 // ────────── Custom Modules ──────────
 import { getLogin } from "./utils.js";
-import { loadFiles } from "./fileLoad.js";
+import { sendClientLog, notifyFileUpload } from "./websocketHandler.js";
 
 // ────────── Rename File Frontend ──────────
 export async function fileRename(oldName) {
@@ -29,10 +29,11 @@ export async function fileRename(oldName) {
             return;
         }
 
-        // Rename succeeded, reload file list to update UI
-        console.log(`Renamed "${oldName}" to "${newName}" successfully.`);
-        await loadFiles();
+        // ─── WebSocket Trigger to Update All Clients ───
+        notifyFileUpload();
+        sendClientLog(`Renamed "${oldName}" to "${newName}"`);
 
+        console.log(`Renamed "${oldName}" to "${newName}" successfully.`);
     } catch (err) {
         console.error("Rename error:", err);
         alert("An error occurred while renaming the file.");
