@@ -34,25 +34,37 @@ if %ERRORLEVEL%==0 (
     set "NODE_PATH=node"
     goto NodeReady
 )
-
 echo %REDCOLOR%[WARNING]%RESET% Node.js was not found on your system.
-choice /C YN /M "Do you want to provide a custom Node.js path? (N to download Node locally)"
-if %ERRORLEVEL%==1 (
-    :: User selected Y - provide custom path
+echo.
+echo %GOLDCOLOR%[PROMPT]%RESET% Node PATH not found in system variables:
+echo     1. Install Node globally and set system variable
+echo     2. Install Node locally and store path in config.json
+echo     3. Specify custom Node path manually
+echo.
+set /p CHOICE=%GOLDCOLOR%[PROMPT]%RESET% Enter choice (1/2/3):
+if "%CHOICE%"=="1" (
+    echo %REDCOLOR%[ERROR]%RESET% Global installation via script not supported. Please install Node manually from:
+    echo     https://nodejs.org/
+    pause
+    exit /b 1
+) else if "%CHOICE%"=="2" (
+    call :DownloadNode
+    goto NodeReady
+) else if "%CHOICE%"=="3" (
     set /p USER_NODE_PATH=%GOLDCOLOR%[PROMPT]%RESET% Enter full path to node.exe:
     if exist "%USER_NODE_PATH%" (
-        echo %GREENCOLOR%[INFO]%RESET% Using user provided Node.js path: %USER_NODE_PATH%
+        echo %GREENCOLOR%[INFO]%RESET% Using user-provided Node.js path: %USER_NODE_PATH%
         set "NODE_PATH=%USER_NODE_PATH%"
         goto NodeReady
     ) else (
-        echo %REDCOLOR%[ERROR]%RESET% Path does not exist. Aborting.
+        echo %REDCOLOR%[ERROR]%RESET% Provided path does not exist. Aborting.
         pause
         exit /b 1
     )
 ) else (
-    :: User selected N - download Node locally
-    call :DownloadNode
-    goto NodeReady
+    echo %REDCOLOR%[ERROR]%RESET% Invalid choice. Aborting.
+    pause
+    exit /b 1
 )
 
 :: ────────── Node.js ready label ──────────
@@ -89,7 +101,7 @@ powershell -Command "$ProgressPreference = 'SilentlyContinue'; Expand-Archive -P
 echo %BLUECOLOR%[INFO]%RESET% Moving extracted files and folders to parent folder...
 for /f "delims=" %%I in ('dir /b /a-d "%INSTALL_DIR%\node-v24.1.0-win-x64"') do (
     move /Y "%INSTALL_DIR%\node-v24.1.0-win-x64\%%I" "%INSTALL_DIR%"
-)
+)1
 for /d %%I in ("%INSTALL_DIR%\node-v24.1.0-win-x64\*") do (
     move /Y "%%I" "%INSTALL_DIR%"
 )
