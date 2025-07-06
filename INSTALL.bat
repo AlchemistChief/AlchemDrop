@@ -20,7 +20,7 @@ set CONFIG_FILE=%~dp0config.json
 :: ────────── Main Execution ──────────
 call :CheckNode
 call :AfterNodeCheck
-call :InstallDependencies
+call :InstallTsNodeDev
 call :PromptStartServer
 exit /b
 
@@ -121,47 +121,40 @@ if /I "%NODE_PATH%"=="node" (
 exit /b
 
 
-:: ────────── Install dependencies and ts-node-dev globally ──────────
-:InstallDependencies
-echo %BLUECOLOR%[INFO]%RESET% Installing ts-node-dev globally...
-
+:: ────────── Install all ts-node-dev dependency ──────────
+:InstallTsNodeDev
+echo %BLUECOLOR%[INFO]%RESET% Installing ts-node-dev globally
 if "%NODE_PATH%"=="node" (
-    :: Node is in PATH, use npm directly
-    npm install -g ts-node-dev
+    call npm install -g ts-node-dev
 ) else (
-    :: Local Node, run npm via local node path
-    "%NODE_PATH%" "%INSTALL_DIR%\node_modules\npm\bin/npm-cli.js" install -g ts-node-dev
+    call "%NODE_PATH%" "%INSTALL_DIR%\node_modules\npm\bin\npm-cli.js" install -g ts-node-dev
 )
-
 if errorlevel 1 (
-    echo %REDCOLOR%[ERROR]%RESET% Failed to install ts-node-dev globally.
+    echo %REDCOLOR%[ERROR]%RESET% Failed to install ts-node-dev.
     pause
-    exit /b
+    exit /b 1
 )
+goto :InstallDependencies
 
-echo %BLUECOLOR%[INFO]%RESET% Installing all npm dependencies from package.json (skip Python and yt-dlp download checks)...
-
-:: Set environment variables to skip python check and yt-dlp download during npm install
+:: ────────── Install all Node.js dependencies ──────────
+:InstallDependencies
 set "YOUTUBE_DL_SKIP_PYTHON_CHECK=1"
 set "YOUTUBE_DL_SKIP_DOWNLOAD=true"
-
+echo %BLUECOLOR%[INFO]%RESET% Installing local project dependencies
 if "%NODE_PATH%"=="node" (
-    npm install
+    call npm install --loglevel verbose > npm_install.log 2>&1
 ) else (
-    "%NODE_PATH%" "%INSTALL_DIR%\node_modules\npm\bin/npm-cli.js" install
+    call "%NODE_PATH%" "%INSTALL_DIR%\node_modules\npm\bin\npm-cli.js" install
 )
-
 if errorlevel 1 (
     echo %REDCOLOR%[ERROR]%RESET% Failed to install npm dependencies.
     pause
-    exit /b
+    exit /b 1
 )
-
-:: Clear the environment variables after install
 set "YOUTUBE_DL_SKIP_PYTHON_CHECK="
 set "YOUTUBE_DL_SKIP_DOWNLOAD="
-
-echo %GREENCOLOR%[SUCCESS]%RESET% Installation complete.
+echo %GREENCOLOR%[SUCCESS]%RESET% All dependencies installed successfully.
+exit /b
 
 :: ────────── Prompt user to start the server ──────────
 :PromptStartServer
